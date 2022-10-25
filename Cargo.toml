@@ -11,3 +11,4 @@ readme = "README.md"
 license = "ISC"
 
 [dependencies]
+palette = { version = "0.6.1", optional = true }
