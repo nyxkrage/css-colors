@@ -1,5 +1,7 @@
 #[cfg(feature = "palette")]
 extern crate palette;
+#[cfg(feature = "serde")]
+extern crate serde;
 
 mod angle;
 mod hsl;
@@ -29,6 +31,23 @@ pub trait Color {
     /// assert_eq!(opaque_salmon.to_css(), "rgba(250, 128, 114, 0.50)");
     /// ```
     fn to_css(self) -> String;
+
+    /// Converts `self` to a hex string in the format #rrggbb without
+    /// alpha, and #rrggbbaa with alpha.
+    ///
+    /// This will always be lowercase.
+    ///
+    /// # Example
+    /// ```
+    /// use css_colors::{Color, rgb, rgba};
+    ///
+    /// let salmon = rgb(250, 128, 114);
+    /// let opaque_salmon = rgba(250, 128, 114, 0.50);
+    ///
+    /// assert_eq!(salmon.to_hex(), "#fa8072");
+    /// assert_eq!(opaque_salmon.to_hex(), "#fa807280");
+    /// ```
+    fn to_hex(self) -> String;
 
     /// Converts `self` into its RGB representation.
     /// When converting from a color model that supports an alpha channel
@@ -282,6 +301,205 @@ pub trait Color {
     /// assert_eq!(cornflower_blue.greyscale(), rgb(169, 169, 169));
     /// ```
     fn greyscale(self) -> Self;
+}
+
+#[cfg(feature = "serde")]
+mod serde_integration {
+    use serde::de::Error;
+    use serde::{de::Visitor, Deserialize, Serialize, Serializer};
+    use std::num::ParseIntError;
+
+    use crate::Color;
+
+    macro_rules! impl_serialize {
+        ($x:ident) => (
+            impl Serialize for crate::$x
+            {
+                fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+                where
+                    S: Serializer,
+                {
+                    serializer.serialize_str(&self.to_hex())
+                }
+            }
+        );
+        ($x:ident, $($y:ident),+ $(,)?) => (
+            impl_serialize!($x);
+
+            impl_serialize!($($y),+);
+        );
+    }
+
+    impl_serialize!(RGB, RGBA, HSL, HSLA);
+
+    struct RgbVisitor;
+    impl<'de> Visitor<'de> for RgbVisitor {
+        type Value = crate::RGB;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+            formatter.write_str("a string in the format of #rrggbb")
+        }
+
+        fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+        where
+            E: serde::de::Error,
+        {
+            let err = Err(serde::de::Error::invalid_value(
+                serde::de::Unexpected::Str(v),
+                &self,
+            ));
+            if v.len() != 7 {
+                return err;
+            }
+
+            if let Some('#') = v.chars().next() {
+                let values: Vec<u8> = match (1..v.len())
+                    .step_by(2)
+                    .map(|i| u8::from_str_radix(&v[i..i + 2], 16))
+                    .collect::<Result<Vec<u8>, ParseIntError>>()
+                {
+                    Ok(v) => v,
+                    Err(_) => return err,
+                };
+                unsafe {
+                    Ok(crate::rgb(
+                        *values.get_unchecked(0),
+                        *values.get_unchecked(1),
+                        *values.get_unchecked(2),
+                    ))
+                }
+            } else {
+                err
+            }
+        }
+
+        fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
+        where
+            E: Error,
+        {
+            self.visit_str(&v)
+        }
+    }
+    struct RgbaVisitor;
+    impl<'de> Visitor<'de> for RgbaVisitor {
+        type Value = crate::RGBA;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+            formatter.write_str("a string in the format of #rrggbbaa")
+        }
+
+        fn visit_str<E>(self, v: &str) -> Result<Self::Value, E>
+        where
+            E: serde::de::Error,
+        {
+            let err = Err(serde::de::Error::invalid_value(
+                serde::de::Unexpected::Str(v),
+                &self,
+            ));
+            if v.len() != 9 {
+                return err;
+            }
+
+            if let Some('#') = v.chars().next() {
+                let values: Vec<u8> = match (1..v.len())
+                    .step_by(2)
+                    .map(|i| u8::from_str_radix(&v[i..i + 2], 16))
+                    .collect::<Result<Vec<u8>, ParseIntError>>()
+                {
+                    Ok(v) => v,
+                    Err(_) => return err,
+                };
+                unsafe {
+                    Ok(crate::rgba(
+                        *values.get_unchecked(0),
+                        *values.get_unchecked(1),
+                        *values.get_unchecked(2),
+                        *values.get_unchecked(3) as f32 / 255.,
+                    ))
+                }
+            } else {
+                err
+            }
+        }
+
+        fn visit_string<E>(self, v: String) -> Result<Self::Value, E>
+        where
+            E: Error,
+        {
+            self.visit_str(&v)
+        }
+    }
+
+    impl<'de> Deserialize<'de> for crate::RGB {
+        fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            deserializer.deserialize_string(RgbVisitor)
+        }
+    }
+    impl<'de> Deserialize<'de> for crate::HSL {
+        fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            deserializer
+                .deserialize_string(RgbVisitor)
+                .map(|c| c.to_hsl())
+        }
+    }
+    impl<'de> Deserialize<'de> for crate::RGBA {
+        fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            deserializer.deserialize_string(RgbaVisitor)
+        }
+    }
+    impl<'de> Deserialize<'de> for crate::HSLA {
+        fn deserialize<D>(deserializer: D) -> Result<Self, D::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            deserializer
+                .deserialize_string(RgbaVisitor)
+                .map(|c| c.to_hsla())
+        }
+    }
+
+    #[cfg(test)]
+    #[test]
+    fn no_alpha_json_deserializing() {
+        let input_str = r##"{"color": "#010203"}"##;
+        #[derive(Deserialize, Debug, PartialEq)]
+        struct Test {
+            color: crate::RGB,
+        }
+        let t: Test = serde_json::from_str(input_str).unwrap();
+        assert_eq!(
+            t,
+            Test {
+                color: crate::rgb(1, 2, 3)
+            }
+        )
+    }
+
+    #[cfg(test)]
+    #[test]
+    fn alpha_json_deserializing() {
+        let input_str = r##"{"color": "#010203FF"}"##;
+        #[derive(Deserialize, Debug, PartialEq)]
+        struct Test {
+            color: crate::RGBA,
+        }
+        let t: Test = serde_json::from_str(input_str).unwrap();
+        assert_eq!(
+            t,
+            Test {
+                color: crate::rgba(1, 2, 3, 1.)
+            }
+        )
+    }
 }
 
 #[cfg(feature = "palette")]
@@ -967,6 +1185,19 @@ mod css_color_tests {
         assert_eq!(rgba.to_css(), "rgba(5, 10, 255, 1.00)");
         assert_eq!(hsl.to_css(), "hsl(6, 93%, 71%)");
         assert_eq!(hsla.to_css(), "hsla(6, 93%, 71%, 1.00)");
+    }
+
+    #[test]
+    fn can_convert_to_hex() {
+        let rgb = rgb(5, 10, 255);
+        let rgba = rgba(5, 10, 255, 1.0);
+        let hsl = hsl(6, 93, 71);
+        let hsla = hsla(6, 93, 71, 1.0);
+
+        assert_eq!(rgb.to_hex(), "#050aff");
+        assert_eq!(rgba.to_hex(), "#050affff");
+        assert_eq!(hsl.to_hex(), "#fa7e70");
+        assert_eq!(hsla.to_hex(), "#fa7e70ff");
     }
 
     #[test]

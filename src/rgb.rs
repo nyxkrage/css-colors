@@ -83,6 +83,15 @@ impl Color for RGB {
         self.to_string()
     }
 
+    fn to_hex(self) -> String {
+        format!(
+            "#{:02x}{:02x}{:02x}",
+            self.r.as_u8(),
+            self.g.as_u8(),
+            self.b.as_u8()
+        )
+    }
+
     fn to_rgb(self) -> RGB {
         self
     }
@@ -197,6 +206,16 @@ impl Color for RGBA {
 
     fn to_css(self) -> String {
         self.to_string()
+    }
+
+    fn to_hex(self) -> String {
+        format!(
+            "#{:02x}{:02x}{:02x}{:02x}",
+            self.r.as_u8(),
+            self.g.as_u8(),
+            self.b.as_u8(),
+            self.a.as_u8()
+        )
     }
 
     fn to_rgb(self) -> RGB {

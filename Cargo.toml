@@ -1,6 +1,6 @@
 [package]
 name = "css-colors"
-version = "1.0.1"
+version = "2.0.0"
 authors = ["vaidehijoshi <vaidehi.sj@gmail.com>", "chancancode <godfreykfc@gmail.com>"]
 
 description = "A Rust converter to transform CSS colors."
@@ -10,5 +10,13 @@ keywords = ["color", "colors", "colour", "css", "converter"]
 readme = "README.md"
 license = "ISC"
 
+
+
 [dependencies]
 palette = { version = "0.6.1", optional = true }
+serde = { version = "1.0.147", optional = true }
+
+[dev-dependencies]
+palette = { version = "0.6.1" }
+serde = { version = "1.0.147", features = ["derive"] }
+serde_json = { version = "1.0.87" }

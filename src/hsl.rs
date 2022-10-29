@@ -88,6 +88,10 @@ impl Color for HSL {
         self.to_string()
     }
 
+    fn to_hex(self) -> String {
+        self.to_rgb().to_hex()
+    }
+
     fn to_rgb(self) -> RGB {
         self.to_hsla().to_rgb()
     }
@@ -220,6 +224,10 @@ impl Color for HSLA {
 
     fn to_css(self) -> String {
         self.to_string()
+    }
+
+    fn to_hex(self) -> String {
+        self.to_rgba().to_hex()
     }
 
     fn to_rgb(self) -> RGB {
