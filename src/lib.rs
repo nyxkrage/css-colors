@@ -606,9 +606,62 @@ mod palette_integration {
     from_css_to_palette!(ALL, palette::Yxy);
 }
 
+#[cfg(feature = "bevy")]
+mod bevy_integration {
+    use bevy::render::color::Color as BevyColor;
+    use hsl;
+    use ::{Color, HSL};
+
+    impl Into<BevyColor> for crate::RGB {
+        fn into(self) -> BevyColor {
+            self.to_rgba().into()
+        }
+    }
+    impl Into<BevyColor> for crate::RGBA {
+        fn into(self) -> BevyColor {
+            BevyColor::Rgba {
+                red: self.r.as_f32(),
+                green: self.g.as_f32(),
+                blue: self.b.as_f32(),
+                alpha: self.a.as_f32(),
+            }
+        }
+    }
+    impl Into<BevyColor> for crate::HSL {
+        fn into(self) -> BevyColor {
+            self.to_hsla().into()
+        }
+    }
+    impl Into<BevyColor> for crate::HSLA {
+        fn into(self) -> BevyColor {
+            BevyColor::Hsla {
+                hue: self.h.degrees() as f32,
+                saturation: self.s.as_f32(),
+                lightness: self.l.as_f32(),
+                alpha: self.a.as_f32(),
+            }
+        }
+    }
+
+    #[cfg(tests)]
+    fn test() {
+        let expected_hsla = BevyColor::hsla(128, 1, 1, 1);
+        let actual_hsl = hsl(128, 100, 100);
+        let actual_hsla = hsl(128, 100, 100, 1.);
+        let expected_rgba = BevyColor::rgba(1., 1., 1., 1.);
+        let actual_rgb = rgb(255, 255, 255);
+        let actual_rgba = rgba(255, 255, 255, 1.);
+
+        assert_eq!(expected_hsla, actual_hsla.into());
+        assert_eq!(expected_hsla, actual_hsl.into());
+        assert_eq!(expected_rgba, actual_rgba.into());
+        assert_eq!(expected_rgba, actual_rgb.into());
+    }
+}
+
 #[cfg(test)]
 mod css_color_tests {
-    use crate::{hsl, hsla, rgb, rgba, percent, deg, Angle, Color, Ratio, HSL, HSLA, RGB, RGBA};
+    use crate::{deg, hsl, hsla, percent, rgb, rgba, Angle, Color, Ratio, HSL, HSLA, RGB, RGBA};
 
     pub trait ApproximatelyEq {
         fn approximately_eq(self, other: Self) -> bool;
