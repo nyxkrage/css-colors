@@ -1,8 +1,3 @@
-#[cfg(feature = "palette")]
-extern crate palette;
-#[cfg(feature = "serde")]
-extern crate serde;
-
 mod angle;
 mod hsl;
 mod ratio;
@@ -613,9 +608,7 @@ mod palette_integration {
 
 #[cfg(test)]
 mod css_color_tests {
-    use angle::*;
-    use ratio::*;
-    use {hsl, hsla, rgb, rgba, Angle, Color, Ratio, HSL, HSLA, RGB, RGBA};
+    use crate::{hsl, hsla, rgb, rgba, percent, deg, Angle, Color, Ratio, HSL, HSLA, RGB, RGBA};
 
     pub trait ApproximatelyEq {
         fn approximately_eq(self, other: Self) -> bool;
@@ -695,7 +688,6 @@ mod css_color_tests {
         }
     }
 
-    #[macro_export]
     macro_rules! assert_approximately_eq {
         ($lhs:expr, $rhs:expr) => {
             let lhs = $lhs;

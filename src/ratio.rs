@@ -104,7 +104,7 @@ fn clamp_ratio(value: f32) -> Ratio {
 
 #[cfg(test)]
 mod tests {
-    use Ratio;
+    use super::Ratio;
 
     #[test]
     #[should_panic]

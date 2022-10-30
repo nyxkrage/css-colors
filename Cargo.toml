@@ -1,7 +1,8 @@
 [package]
 name = "css-colors"
-version = "2.0.0"
-authors = ["vaidehijoshi <vaidehi.sj@gmail.com>", "chancancode <godfreykfc@gmail.com>"]
+edition = "2021"
+version = "3.0.0"
+authors = ["Carsten Kragelund <carsten@kragelund.me>", "vaidehijoshi <vaidehi.sj@gmail.com>", "chancancode <godfreykfc@gmail.com>"]
 
 description = "A Rust converter to transform CSS colors."
 repository = "https://github.com/vaidehijoshi/css-colors"

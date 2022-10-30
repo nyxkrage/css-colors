@@ -107,7 +107,7 @@ impl ops::Div for Angle {
 
 #[cfg(test)]
 mod tests {
-    use Angle;
+    use super::Angle;
 
     #[test]
     fn can_have_degrees() {
