@@ -6,7 +6,7 @@ use std::ops;
 ///
 /// # Example
 /// ```
-/// use css_colors::{deg};
+/// use farver::{deg};
 ///
 /// assert_eq!(deg(0).to_string(), "0deg");
 /// assert_eq!(deg(90).to_string(), "90deg");

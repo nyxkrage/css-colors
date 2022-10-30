@@ -6,7 +6,7 @@ use std::fmt;
 ///
 /// # Example
 /// ```
-/// use css_colors::{Color, rgb};
+/// use farver::{Color, rgb};
 ///
 /// let salmon = rgb(250, 128, 114);
 ///
@@ -30,7 +30,7 @@ pub fn rgb(r: u8, g: u8, b: u8) -> RGB {
 ///
 /// # Example
 /// ```
-/// use css_colors::{Color, rgba};
+/// use farver::{Color, rgba};
 ///
 /// let salmon = rgba(250, 128, 114, 0.50);
 ///

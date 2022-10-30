@@ -17,7 +17,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba};
+    /// use farver::{Color, rgb, rgba};
     ///
     /// let salmon = rgb(250, 128, 114);
     /// let opaque_salmon = rgba(250, 128, 114, 0.50);
@@ -34,7 +34,7 @@ pub trait Color {
     ///
     /// # Example
     /// ```
-    /// use css_colors::{Color, rgb, rgba};
+    /// use farver::{Color, rgb, rgba};
     ///
     /// let salmon = rgb(250, 128, 114);
     /// let opaque_salmon = rgba(250, 128, 114, 0.50);
@@ -50,7 +50,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba};
+    /// use farver::{Color, rgb, rgba};
     ///
     /// let opaque_tomato = rgba(255, 99, 71, 0.5);
     ///
@@ -64,7 +64,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba};
+    /// use farver::{Color, rgb, rgba};
     ///
     /// let tomato = rgb(255, 99, 71);
     ///
@@ -78,7 +78,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, hsl};
+    /// use farver::{Color, rgb, rgba, hsl};
     ///
     /// let tomato = rgb(255, 99, 71);
     /// let opaque_tomato = rgba(255, 99, 71, 0.5);
@@ -94,7 +94,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, hsl, hsla};
+    /// use farver::{Color, rgb, rgba, hsl, hsla};
     ///
     /// let tomato = rgb(255, 99, 71);
     /// let opaque_tomato = rgba(255, 99, 71, 0.5);
@@ -110,7 +110,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, hsla, percent};
+    /// use farver::{Color, rgb, hsla, percent};
     ///
     /// let salmon = hsla(6, 93, 71, 1.0);
     /// let cornflower_blue = rgb(100, 149, 237);
@@ -126,7 +126,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, percent};
+    /// use farver::{Color, rgb, rgba, percent};
     ///
     /// let tomato = rgba(255, 99, 71, 1.0);
     /// let cornflower_blue = rgb(100, 149, 237);
@@ -142,7 +142,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, percent};
+    /// use farver::{Color, rgb, rgba, percent};
     ///
     /// let tomato = rgba(255, 99, 71, 1.0);
     /// let cornflower_blue = rgb(100, 149, 237);
@@ -158,7 +158,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, percent};
+    /// use farver::{Color, rgb, rgba, percent};
     ///
     /// let tomato = rgba(255, 99, 71, 1.0);
     /// let cornflower_blue = rgb(100, 149, 237);
@@ -174,7 +174,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, percent};
+    /// use farver::{Color, rgb, rgba, percent};
     ///
     /// let tomato = rgba(255, 99, 71, 0.25);
     /// let cornflower_blue = rgb(100, 149, 237);
@@ -190,7 +190,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, percent};
+    /// use farver::{Color, rgb, rgba, percent};
     ///
     /// let tomato = rgba(255, 99, 71, 0.5);
     /// let cornflower_blue = rgb(100, 149, 237);
@@ -206,7 +206,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, percent};
+    /// use farver::{Color, rgb, rgba, percent};
     ///
     /// let tomato = rgba(255, 99, 71, 0.5);
     /// let cornflower_blue = rgb(100, 149, 237);
@@ -222,7 +222,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, hsl, deg};
+    /// use farver::{Color, rgb, hsl, deg};
     ///
     /// let red = hsl(10, 90, 50);
     /// let pink = rgb(243, 13, 90);
@@ -238,7 +238,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, hsl, hsla, percent};
+    /// use farver::{Color, rgb, rgba, hsl, hsla, percent};
     ///
     /// let red = hsl(10, 90, 50);
     /// let golden = rgb(243, 166, 13);
@@ -255,7 +255,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, hsl, percent};
+    /// use farver::{Color, rgb, rgba, hsl, percent};
     ///
     /// let red = hsl(10, 90, 50);
     /// let golden = rgb(243, 166, 13);
@@ -271,7 +271,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba, hsl, percent};
+    /// use farver::{Color, rgb, rgba, hsl, percent};
     ///
     /// let red = hsl(10, 90, 50);
     /// let golden = rgb(243, 166, 13);
@@ -287,7 +287,7 @@ pub trait Color {
     ///
     /// # Examples
     /// ```
-    /// use css_colors::{Color, rgb, rgba};
+    /// use farver::{Color, rgb, rgba};
     ///
     /// let tomato = rgba(255, 99, 71, 1.0);
     /// let cornflower_blue = rgb(100, 149, 237);
@@ -660,7 +660,7 @@ mod bevy_integration {
 }
 
 #[cfg(test)]
-mod css_color_tests {
+mod tests {
     use crate::{deg, hsl, hsla, percent, rgb, rgba, Angle, Color, Ratio, HSL, HSLA, RGB, RGBA};
 
     pub trait ApproximatelyEq {

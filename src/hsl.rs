@@ -11,7 +11,7 @@ use std::fmt;
 ///
 /// # Example
 /// ```
-/// use css_colors::{Color, hsl};
+/// use farver::{Color, hsl};
 ///
 /// let salmon = hsl(6, 93, 71);
 ///
@@ -39,7 +39,7 @@ pub fn hsl(h: i32, s: u8, l: u8) -> HSL {
 ///
 /// # Example
 /// ```
-/// use css_colors::{Color, hsla};
+/// use farver::{Color, hsla};
 ///
 /// let salmon = hsla(6, 93, 71, 0.50);
 ///

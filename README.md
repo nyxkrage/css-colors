@@ -1,29 +1,21 @@
-# css-colors
+# farver
 
-[![Build Status](https://travis-ci.com/vaidehijoshi/css-colors.svg?branch=master)](https://travis-ci.com/vaidehijoshi/css-colors) [![css-colors](https://docs.rs/css-colors/badge.svg)](https://docs.rs/css-colors)
+[![css-colors](https://docs.rs/farver/badge.svg)](https://docs.rs/farver)
 
 A Rust converter to transform CSS colors. 🎨
 
 ## Installation
 
-Add the `css_colors` crate to your `Cargo.toml`'s list of dependencies:
+Add the `farver` crate to your `Cargo.toml`'s list of dependencies:
 ```rust
 [dependencies]
-css_colors = "1.0"
+farver = "3.1.0"
 ```
 
-Then tell your program to use the crate by adding the `extern crate` declaration to your root:
-```rust
-extern crate css_colors;
-```
+## What is farver?
 
-## Usage
-
-The goal of this crate is to make it easy for you to transform and convert between common CSS color representations, allowing you to perform operations on your colors in the most intutive way possible. 🌈
-
-### What is css_colors?
-
-This crate allows you to create and convert between different color models. Currently, it handles transformation between the RGB color model and the HSL color model used in CSS3.
+This crate allows you to create and manipulate colors using `Less` functions, and to be able to use a common color type if you need 
+to convert to interact with multiple crates
 
 The RGB color model is often useful when you'd like to represent a color using a certain amount of red, green, and blue.
 ```css
@@ -43,11 +35,11 @@ $desaturated-tomato: desaturate($tomato, 40%); // hsl(9, 60%, 64%)
 
 This crate allows you to perform operations that map to Less' [color operations API](http://lesscss.org/functions/#color-operations). These operations can be applied on both RGB & HSL color models.
 
-### Examples
+## Examples
 
 Represent colors as a valid CSS string:
 ```rust
-use css_colors::{Color, rgb, hsla};
+use farver::{Color, rgb, hsla};
 
 let salmon = rgb(250, 128, 114);
 let chartreuse = hsla(90, 100, 50, 1.0);
@@ -58,7 +50,7 @@ assert_eq!(chartreuse.to_css(), "hsla(90, 100%, 50%, 1.00)");
 
 Convert between different color model representations:
 ```rust
-use css_colors::{Color, rgb, rgba, hsl, hsla};
+use farver::{Color, rgb, rgba, hsl, hsla};
 
 let chartreuse = rgb(127, 255, 0);
 
@@ -69,7 +61,7 @@ assert_eq!(chartreuse.to_rgba(), rgba(127, 255, 0, 1.0));
 
 Manipulate single colors to create new color model representations:
 ```rust
-use css_colors::{Color, hsl, percent};
+use farver::{Color, hsl, percent};
 
 let chartreuse = hsl(90, 100, 50);
 
@@ -80,7 +72,7 @@ assert_eq!(chartreuse.greyscale(), hsl(90, 0, 50));
 
 Manipulate multiple colors to create new color model representations:
 ```rust
-use css_colors::{Color, rgb, rgba, hsl, hsla, percent};
+use farver::{Color, rgb, rgba, hsl, hsla, percent};
 
 let chartreuse = hsl(90, 100, 50);
 let red = rgba(100, 0, 0, 1.0);
@@ -93,7 +85,7 @@ assert_eq!(chartreuse.tint(percent(50)).to_css(), "hsl(90, 100%, 75%)");
 assert_eq!(chartreuse.shade(percent(50)).to_css(), "hsl(90, 98%, 25%)");
 ```
 
-Check out the [documentation](https://docs.rs/css-colors) to learn more about what color operations are available to use!
+Check out the [documentation](https://docs.rs/farver) to learn more about what color operations are available to use!
 
 ## Helpful Links
 
@@ -107,25 +99,19 @@ The following links may be helpful while using this crate.
 
 ### Installation
 
-* `git clone <repository-url>`
-* `cd css-colors`
-* `rustup update`
+* `git clone https://github.com/nyxkrage/farver`
+* `cd farver`
 * `cargo build`
 
 ### Linting + plugins
 
-Please use the below plugins to ensure code consistency when contributing to this crate.
+Please use the below tools to ensure code consistency when contributing to this crate.
 * [Rustfmt](https://github.com/rust-lang-nursery/rustfmt) for formatting code style
-* [RLS-vscode](https://github.com/rust-lang-nursery/rls-vscode) for RLS-based linting for VSCode
-* [CodeLLDB](https://github.com/vadimcn/vscode-lldb) for debugging
 
 ### Building + testing
 
-* `rustup update` – Updates to the most current Rust version
 * `cargo build` – Builds the crate
 * `cargo test` – Runs the test suite
-
-We run our test suite against the Rust stable, beta, and nightly versions on Travis CI.
 
 ## License
 

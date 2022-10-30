@@ -6,7 +6,7 @@ use std::ops;
 ///
 /// # Example
 /// ```
-/// use css_colors::{percent};
+/// use farver::{percent};
 ///
 /// assert_eq!(percent(0).to_string(), "0%");
 /// assert_eq!(percent(25).to_string(), "25%");
