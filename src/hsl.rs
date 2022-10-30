@@ -56,7 +56,7 @@ pub fn hsla(h: i32, s: u8, l: u8, a: f32) -> HSLA {
     }
 }
 
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// A struct to represent how much hue, saturation, and luminosity should be added to create a color.
 /// The hue is a degree on the color wheel; 0 (or 360) is red, 120 is green, 240 is blue.
 /// A valid value for `h` must range between `0-360`.
@@ -183,7 +183,7 @@ fn to_rgb_value(val: u16, temp_1: f32, temp_2: f32) -> f32 {
     }
 }
 
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// A struct to represent how much hue, saturation, and luminosity should be added to create a color.
 /// Also handles alpha specifications.
 ///

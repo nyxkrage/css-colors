@@ -95,7 +95,7 @@ impl ops::Div for Ratio {
 fn clamp_ratio(value: f32) -> Ratio {
     if value > 1.0 {
         Ratio::from_f32(1.0)
-    } else if value >= 0.0 && value <= 1.0 {
+    } else if (0.0..=1.0).contains(&value) {
         Ratio::from_f32(value)
     } else {
         Ratio::from_f32(0.0)

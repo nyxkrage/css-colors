@@ -47,7 +47,7 @@ pub fn rgba(r: u8, g: u8, b: u8, a: f32) -> RGBA {
     }
 }
 
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// A struct to represent how much red, green, and blue should be added to create a color.
 ///
 /// Valid values for r, g, and b must be a u8 between `0-255`, represented as a `Ratio`.
@@ -166,7 +166,7 @@ impl Color for RGB {
     }
 }
 
-#[derive(Debug, Copy, Clone, PartialEq)]
+#[derive(Debug, Copy, Clone, PartialEq, Eq)]
 /// A struct to represent how much red, green, and blue should be added to create a color.
 /// Also handles alpha specifications.
 ///
