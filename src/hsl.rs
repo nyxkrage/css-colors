@@ -162,6 +162,25 @@ impl Color for HSL {
     fn greyscale(self) -> Self {
         self.to_hsla().greyscale().to_hsl()
     }
+
+    #[cfg(feature = "ansi_term")]
+    fn ansi_paint<'a, I, S: 'a + ToOwned + ?Sized>(
+        &self,
+        input: I,
+    ) -> ansi_term::ANSIGenericString<'a, S>
+    where
+        I: Into<Cow<'a, S>>,
+        <S as ToOwned>::Owned: Debug,
+    {
+        let rgb = self.to_rgb();
+        ansi_term::Colour::RGB(rgb.r.as_u8(), rgb.g.as_u8(), rgb.g.as_u8()).paint(input)
+    }
+}
+
+impl From<HSL> for (u16, u8, u8) {
+    fn from(v: HSL) -> Self {
+        (v.h.degrees(), v.s.as_u8(), v.l.as_u8())
+    }
 }
 
 // A function to convert an HSL value (either h, s, or l) into the equivalent, valid RGB value.
@@ -381,5 +400,24 @@ impl Color for HSLA {
             l,
             a,
         }
+    }
+
+    #[cfg(feature = "ansi_term")]
+    fn ansi_paint<'a, I, S: 'a + ToOwned + ?Sized>(
+        &self,
+        input: I,
+    ) -> ansi_term::ANSIGenericString<'a, S>
+    where
+        I: Into<Cow<'a, S>>,
+        <S as ToOwned>::Owned: Debug,
+    {
+        let rgb = self.to_rgb();
+        ansi_term::Colour::RGB(rgb.r.as_u8(), rgb.g.as_u8(), rgb.g.as_u8()).paint(input)
+    }
+}
+
+impl From<HSLA> for (u16, u8, u8, f32) {
+    fn from(v: HSLA) -> Self {
+        (v.h.degrees(), v.s.as_u8(), v.l.as_u8(), v.a.as_f32())
     }
 }

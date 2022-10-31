@@ -164,6 +164,25 @@ impl Color for RGB {
     fn greyscale(self) -> Self {
         self.to_rgba().greyscale().to_rgb()
     }
+
+    #[cfg(feature = "ansi_term")]
+    fn ansi_paint<'a, I, S: 'a + ToOwned + ?Sized>(
+        &self,
+        input: I,
+    ) -> ansi_term::ANSIGenericString<'a, S>
+    where
+        I: Into<Cow<'a, S>>,
+        <S as ToOwned>::Owned: Debug,
+    {
+        let rgb = self.to_rgb();
+        ansi_term::Colour::RGB(rgb.r.as_u8(), rgb.g.as_u8(), rgb.g.as_u8()).paint(input)
+    }
+}
+
+impl From<RGB> for (u8, u8, u8) {
+    fn from(v: RGB) -> Self {
+        (v.r.as_u8(), v.g.as_u8(), v.b.as_u8())
+    }
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
@@ -246,7 +265,7 @@ impl Color for RGBA {
             };
         }
 
-        // Otherwise, to determine luminosity, we conver the RGB values into a
+        // Otherwise, to determine luminosity, we convert the RGB values into a
         // percentage value, find the max and the min of those values, sum them
         // together, and divide by 2.
         let r = self.r.as_f32();
@@ -370,7 +389,7 @@ impl Color for RGBA {
             (w + a) / (1.0 + w * a)
         };
 
-        // Find the combined rgb weight, scaling it to fall in a range bewtween [0, 1].
+        // Find the combined rgb weight, scaling it to fall in a range between [0, 1].
         let rgb_weight = (rgb_weight + 1.0) / 2.0;
 
         // Convert left and right side's weights into Ratios.
@@ -398,5 +417,24 @@ impl Color for RGBA {
 
     fn greyscale(self) -> Self {
         self.to_hsla().greyscale().to_rgba()
+    }
+
+    #[cfg(feature = "ansi_term")]
+    fn ansi_paint<'a, I, S: 'a + ToOwned + ?Sized>(
+        &self,
+        input: I,
+    ) -> ansi_term::ANSIGenericString<'a, S>
+    where
+        I: Into<Cow<'a, S>>,
+        <S as ToOwned>::Owned: Debug,
+    {
+        let rgb = self.to_rgb();
+        ansi_term::Colour::RGB(rgb.r.as_u8(), rgb.g.as_u8(), rgb.g.as_u8()).paint(input)
+    }
+}
+
+impl From<RGBA> for (u8, u8, u8, f32) {
+    fn from(v: RGBA) -> Self {
+        (v.r.as_u8(), v.g.as_u8(), v.b.as_u8(), v.a.as_f32())
     }
 }

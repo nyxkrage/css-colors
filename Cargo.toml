@@ -1,7 +1,7 @@
 [package]
 name = "farver"
 edition = "2021"
-version = "3.1.0"
+version = "3.2.0"
 authors = ["Carsten Kragelund <carsten@kragelund.me>", "vaidehijoshi <vaidehi.sj@gmail.com>", "chancancode <godfreykfc@gmail.com>"]
 
 description = "A Rust color library with easy transformation of colors with less functions."
@@ -17,9 +17,11 @@ license = "ISC"
 palette = { version = "0.6.1", optional = true }
 serde = { version = "1.0.147", optional = true }
 bevy = { version = "0.8.1", optional = true }
+ansi_term = { version = "0.12.1", optional = true }
 
 [dev-dependencies]
 palette = { version = "0.6.1" }
 bevy = { version = "0.8.1", default-features = true, features = ["bevy_render"] }
 serde = { version = "1.0.147", features = ["derive"] }
 serde_json = { version = "1.0.87" }
+ansi_term = { version = "0.12.1" }

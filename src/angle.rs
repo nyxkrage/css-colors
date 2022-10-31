@@ -6,7 +6,7 @@ use std::ops;
 ///
 /// # Example
 /// ```
-/// use farver::{deg};
+/// use farver::deg;
 ///
 /// assert_eq!(deg(0).to_string(), "0deg");
 /// assert_eq!(deg(90).to_string(), "90deg");
@@ -107,7 +107,7 @@ impl ops::Div for Angle {
 
 #[cfg(test)]
 mod tests {
-    use super::Angle;
+    use crate::Angle;
 
     #[test]
     fn can_have_degrees() {
